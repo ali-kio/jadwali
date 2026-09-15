@@ -1,0 +1,118 @@
+/* ==========================================================================
+   base.css — إعادة الضبط، الطباعة، المنافع العامة
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body{
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: var(--fs-md);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overscroll-behavior-y: none;
+}
+
+/* نسيج ورقي خفيف جداً — يعطي الإحساس الكريمي بدون ضجيج */
+body::before{
+  content: "";
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  opacity: .5;
+  background:
+    radial-gradient(1100px 620px at 88% -8%, color-mix(in srgb, var(--accent-base) 9%, transparent), transparent 62%),
+    radial-gradient(760px 520px at -6% 100%, color-mix(in srgb, var(--accent-base) 6%, transparent), transparent 60%);
+}
+
+h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); font-weight: 600; line-height: 1.28; letter-spacing: -.01em; }
+h1 { font-size: var(--fs-xl); }
+h2 { font-size: var(--fs-lg); }
+h3 { font-size: var(--fs-md); }
+p  { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+
+a { color: inherit; text-decoration: none; }
+
+button{
+  font: inherit; color: inherit; background: none; border: 0;
+  cursor: pointer; padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+input, select, textarea { font: inherit; color: inherit; }
+
+svg { display: block; }
+
+img { max-width: 100%; display: block; }
+
+::selection { background: var(--accent); color: var(--accent-ink); }
+
+/* تركيز واضح للوحة المفاتيح فقط */
+:focus { outline: none; }
+:focus-visible{
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--r-sm);
+}
+
+/* شريط التمرير */
+*{ scrollbar-width: thin; scrollbar-color: var(--rule-2) transparent; }
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb{
+  background: var(--rule-2); border-radius: 99px;
+  border: 3px solid transparent; background-clip: content-box;
+}
+
+/* --------------------------- منافع عامة --------------------------- */
+.num{
+  font-family: var(--font-num);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.02em;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.muted { color: var(--ink-2); }
+.dim   { color: var(--ink-3); }
+.small { font-size: var(--fs-sm); }
+.tiny  { font-size: var(--fs-xs); }
+.strong{ font-weight: 600; }
+.row   { display: flex; align-items: center; gap: var(--s2); }
+.row-wrap { display: flex; align-items: center; gap: var(--s2); flex-wrap: wrap; }
+.col   { display: flex; flex-direction: column; gap: var(--s2); }
+.push  { margin-inline-start: auto; }
+.center{ text-align: center; }
+.truncate{ overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.hidden{ display: none !important; }
+
+.sr-only{
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.skip-link{
+  position: absolute; inset-inline-start: -999px; top: 8px; z-index: 999;
+  background: var(--accent); color: var(--accent-ink);
+  padding: 10px 16px; border-radius: var(--r-md);
+}
+.skip-link:focus { inset-inline-start: 8px; }
+
+.stack > * + * { margin-top: var(--s4); }
+.stack-sm > * + * { margin-top: var(--s2); }
+
+i[data-i]{ display: inline-flex; flex: 0 0 auto; }
+i[data-i] svg{ width: 1.25em; height: 1.25em; stroke-width: 1.7; }
+
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

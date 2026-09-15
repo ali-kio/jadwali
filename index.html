@@ -1,197 +1,127 @@
-<!-- ============ index.html ============ -->
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" data-theme="light" data-accent="pearl">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#08070f" />
-<meta name="description" content="مركز التحكم الأكاديمي — جدول، اختبارات، تغطية فصول، وغيابات جامعة البحرين" />
-<title>Campus OS — مركز التحكم الأكاديمي</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5" />
+<meta name="color-scheme" content="light dark" />
+<meta name="theme-color" content="#faf5ea" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#141210" media="(prefers-color-scheme: dark)" />
+<meta name="description" content="جدولك الجامعي، محاضراتك، اختباراتك النهائية، وغياباتك — في مكان واحد يشتغل بدون إنترنت." />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="جدولي" />
+
+<title>جدولي — منظّم الفصل الدراسي</title>
 
 <link rel="manifest" href="manifest.json" />
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='44' fill='%230b0a14'/%3E%3Crect x='38' y='46' width='116' height='104' rx='18' fill='none' stroke='%238b7bff' stroke-width='10'/%3E%3Cpath d='M38 82h116' stroke='%238b7bff' stroke-width='10'/%3E%3Ccircle cx='72' cy='112' r='9' fill='%2334d399'/%3E%3Ccircle cx='110' cy='112' r='9' fill='%2360a5fa'/%3E%3C/svg%3E" />
+<link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Readex+Pro:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    theme: { extend: { fontFamily: { sans: ['Tajawal', 'system-ui', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] } } }
-  };
-</script>
-<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="css/tokens.css" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/components.css" />
+<link rel="stylesheet" href="css/layout.css" />
+<link rel="stylesheet" href="css/views.css" />
 </head>
 
 <body>
-  <!-- خلفية الأورورا -->
-  <div class="aurora" aria-hidden="true">
-    <span class="blob blob-1"></span>
-    <span class="blob blob-2"></span>
-    <span class="blob blob-3"></span>
-    <span class="grain"></span>
-  </div>
+<a class="skip-link" href="#view">تخطَّ إلى المحتوى</a>
 
-  <div class="app-shell">
+<div class="shell">
 
-    <!-- ============ الشريط الجانبي ============ -->
-    <aside class="sidebar glass" aria-label="التنقل الرئيسي">
-      <a class="brand" href="#/home" data-link="#/home">
-        <span class="brand-mark"><i data-lucide="graduation-cap"></i></span>
-        <span class="brand-text">
-          <strong>Campus<span>OS</span></strong>
-          <small>مركز التحكم الأكاديمي</small>
-        </span>
-      </a>
+  <!-- ===== الشريط الجانبي (شاشات كبيرة) ===== -->
+  <aside class="rail" aria-label="التنقل">
+    <a class="rail-brand" href="#/home" data-link>
+      <span class="rail-mark" aria-hidden="true"></span>
+      <span class="rail-name">جدولي</span>
+    </a>
 
-      <nav class="nav" id="side-nav">
-        <a class="nav-item" href="#/home"     data-link="#/home"     data-nav="home"><i data-lucide="layout-dashboard"></i><span>الرئيسية</span><kbd>1</kbd></a>
-        <a class="nav-item" href="#/schedule" data-link="#/schedule" data-nav="schedule"><i data-lucide="calendar-days"></i><span>الجدول</span><kbd>2</kbd></a>
-        <a class="nav-item" href="#/exams"    data-link="#/exams"    data-nav="exams"><i data-lucide="clipboard-check"></i><span>الاختبارات</span><kbd>3</kbd></a>
-        <a class="nav-item" href="#/vault"    data-link="#/vault"    data-nav="vault"><i data-lucide="library"></i><span>خزنة المقررات</span><kbd>4</kbd></a>
-        <a class="nav-item" href="#/settings" data-link="#/settings" data-nav="settings"><i data-lucide="settings-2"></i><span>الإعدادات</span><kbd>5</kbd></a>
-      </nav>
+    <nav class="rail-nav">
+      <a href="#/home"     data-link data-nav="home"><i data-i="home"></i><span>الرئيسية</span></a>
+      <a href="#/schedule" data-link data-nav="schedule"><i data-i="calendar"></i><span>الجدول</span></a>
+      <a href="#/exams"    data-link data-nav="exams"><i data-i="clipboard"></i><span>الاختبارات</span></a>
+      <a href="#/courses"  data-link data-nav="courses"><i data-i="library"></i><span>المقررات</span></a>
+      <a href="#/adhkar"   data-link data-nav="adhkar"><i data-i="sparkle"></i><span>الأذكار</span></a>
+      <a href="#/settings" data-link data-nav="settings"><i data-i="settings"></i><span>الإعدادات</span></a>
+    </nav>
 
-      <div class="side-foot">
-        <button class="side-cta" data-action="open-notes">
-          <i data-lucide="notebook-pen"></i><span>المفكرة</span><kbd>N</kbd>
-        </button>
-        <div class="side-tip glass-soft">
-          <i data-lucide="command"></i>
-          <p>اضغط <kbd>Ctrl</kbd>+<kbd>K</kbd> للبحث في كل شيء</p>
-        </div>
-        <p class="side-version">v1.0 · يعمل بدون إنترنت</p>
-      </div>
-    </aside>
-
-    <!-- ============ المحتوى ============ -->
-    <div class="main-col">
-      <header class="topbar glass">
-        <button class="icon-btn only-mobile" data-action="toggle-sidebar" aria-label="القائمة"><i data-lucide="menu"></i></button>
-
-        <button class="search-trigger" data-action="open-search">
-          <i data-lucide="search"></i>
-          <span>ابحث عن مقرر، اختبار، فصل، أو مذكرة…</span>
-          <kbd>Ctrl K</kbd>
-        </button>
-
-        <div class="topbar-right">
-          <div class="clock-pill">
-            <i data-lucide="clock"></i>
-            <span id="live-clock" class="mono">--:--:--</span>
-          </div>
-          <button class="icon-btn" data-action="open-help" aria-label="اختصارات"><i data-lucide="keyboard"></i></button>
-          <button class="avatar-btn" data-link="#/settings" aria-label="الملف الشخصي"><span id="avatar-initials">ع</span></button>
-        </div>
-      </header>
-
-      <main id="view-root" class="view-root" tabindex="-1"></main>
-
-      <nav class="tabbar glass only-mobile" aria-label="تنقل سريع">
-        <a href="#/home"     data-link="#/home"     data-nav="home"><i data-lucide="layout-dashboard"></i><span>الرئيسية</span></a>
-        <a href="#/schedule" data-link="#/schedule" data-nav="schedule"><i data-lucide="calendar-days"></i><span>الجدول</span></a>
-        <a href="#/exams"    data-link="#/exams"    data-nav="exams"><i data-lucide="clipboard-check"></i><span>اختبارات</span></a>
-        <a href="#/vault"    data-link="#/vault"    data-nav="vault"><i data-lucide="library"></i><span>الخزنة</span></a>
-        <a href="#/settings" data-link="#/settings" data-nav="settings"><i data-lucide="settings-2"></i><span>إعدادات</span></a>
-      </nav>
-    </div>
-  </div>
-
-  <!-- ============ لوحة الأوامر ============ -->
-  <div class="overlay" id="search-overlay" hidden>
-    <div class="palette glass" role="dialog" aria-modal="true" aria-label="البحث الشامل">
-      <div class="palette-head">
-        <i data-lucide="search"></i>
-        <input id="search-input" type="text" placeholder="اكتب للبحث… (مقرر، اختبار، فصل، قاعة، مذكرة)" autocomplete="off" />
-        <kbd>Esc</kbd>
-      </div>
-      <div class="palette-body" id="search-results"></div>
-      <div class="palette-foot">
-        <span><kbd>↑</kbd><kbd>↓</kbd> تنقل</span>
-        <span><kbd>Enter</kbd> فتح</span>
-        <span><kbd>Esc</kbd> إغلاق</span>
+    <div class="rail-foot">
+      <button class="btn btn-soft btn-block" data-act="add-course"><i data-i="plus"></i><span>أضف مقرر</span></button>
+      <div class="rail-theme" role="group" aria-label="المظهر">
+        <button data-act="theme" data-theme-val="light" title="فاتح"><i data-i="sun"></i></button>
+        <button data-act="theme" data-theme-val="dark" title="داكن"><i data-i="moon"></i></button>
+        <button data-act="theme" data-theme-val="auto" title="حسب النظام"><i data-i="monitor"></i></button>
       </div>
     </div>
-  </div>
+  </aside>
 
-  <!-- ============ درج المفكرة ============ -->
-  <div class="overlay" id="notes-overlay" hidden>
-    <aside class="drawer glass" role="dialog" aria-modal="true" aria-label="المفكرة">
-      <header class="drawer-head">
-        <div>
-          <h2><i data-lucide="notebook-pen"></i> المفكرة السريعة</h2>
-          <p>حفظ تلقائي · مرتبطة بالمقررات</p>
-        </div>
-        <button class="icon-btn" data-action="close-overlay" aria-label="إغلاق"><i data-lucide="x"></i></button>
-      </header>
-
-      <section class="pomodoro glass-soft">
-        <div class="pomo-ring">
-          <svg viewBox="0 0 120 120"><circle class="pomo-bg" cx="60" cy="60" r="52"></circle><circle id="pomo-arc" class="pomo-arc" cx="60" cy="60" r="52"></circle></svg>
-          <div class="pomo-time mono" id="pomo-time">25:00</div>
-        </div>
-        <div class="pomo-controls">
-          <p id="pomo-label">جلسة تركيز</p>
-          <div>
-            <button class="btn btn-sm btn-primary" id="pomo-toggle" data-action="pomo-toggle">ابدأ</button>
-            <button class="btn btn-sm btn-ghost" data-action="pomo-reset">تصفير</button>
-          </div>
-          <div class="pomo-presets">
-            <button class="chip" data-action="pomo-set" data-min="25">25د</button>
-            <button class="chip" data-action="pomo-set" data-min="45">45د</button>
-            <button class="chip" data-action="pomo-set" data-min="5">5د</button>
-          </div>
-        </div>
-      </section>
-
-      <div class="drawer-actions">
-        <button class="btn btn-primary btn-block" data-action="new-note"><i data-lucide="plus"></i> مذكرة جديدة</button>
+  <!-- ===== العمود الرئيسي ===== -->
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-title">
+        <h1 id="page-title">الرئيسية</h1>
+        <p id="page-sub"></p>
       </div>
-      <div class="notes-list" id="notes-list"></div>
-    </aside>
-  </div>
-
-  <!-- ============ مودال عام ============ -->
-  <div class="overlay" id="modal-overlay" hidden>
-    <div class="modal glass" role="dialog" aria-modal="true">
-      <header class="modal-head">
-        <h3 id="modal-title">—</h3>
-        <button class="icon-btn" data-action="close-overlay" aria-label="إغلاق"><i data-lucide="x"></i></button>
-      </header>
-      <div class="modal-body" id="modal-body"></div>
-      <footer class="modal-foot">
-        <button class="btn btn-ghost" data-action="close-overlay">إلغاء</button>
-        <button class="btn btn-primary" id="modal-submit">حفظ</button>
-      </footer>
-    </div>
-  </div>
-
-  <!-- ============ اختصارات ============ -->
-  <div class="overlay" id="help-overlay" hidden>
-    <div class="modal glass" role="dialog" aria-modal="true" aria-label="اختصارات الكيبورد">
-      <header class="modal-head">
-        <h3><i data-lucide="keyboard"></i> اختصارات الكيبورد</h3>
-        <button class="icon-btn" data-action="close-overlay" aria-label="إغلاق"><i data-lucide="x"></i></button>
-      </header>
-      <div class="modal-body">
-        <ul class="shortcut-list">
-          <li><span>الرئيسية / الجدول / الاختبارات / الخزنة / الإعدادات</span><em><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd><kbd>5</kbd></em></li>
-          <li><span>البحث الشامل</span><em><kbd>Ctrl</kbd><kbd>K</kbd> أو <kbd>/</kbd></em></li>
-          <li><span>فتح المفكرة</span><em><kbd>N</kbd></em></li>
-          <li><span>تبديل عرض الجدول (شبكة / يومي)</span><em><kbd>G</kbd></em></li>
-          <li><span>القفز لأقرب اختبار</span><em><kbd>E</kbd></em></li>
-          <li><span>إغلاق أي نافذة</span><em><kbd>Esc</kbd></em></li>
-          <li><span>هذه القائمة</span><em><kbd>?</kbd></em></li>
-        </ul>
+      <div class="topbar-tools">
+        <button class="icon-btn" data-act="search" aria-label="بحث"><i data-i="search"></i></button>
+        <button class="icon-btn only-mobile" data-act="cycle-theme" aria-label="تبديل المظهر"><i data-i="sun" data-theme-icon></i></button>
+        <a class="icon-btn only-mobile" href="#/settings" data-link data-nav="settings" aria-label="الإعدادات"><i data-i="settings"></i></a>
+        <button class="icon-btn" data-act="add-course" aria-label="أضف مقرر"><i data-i="plus"></i></button>
       </div>
-      <footer class="modal-foot"><button class="btn btn-primary" data-action="close-overlay">تمام</button></footer>
-    </div>
+    </header>
+
+    <main id="view" class="view" tabindex="-1"></main>
+
+    <nav class="tabbar" aria-label="تنقل سريع">
+      <a href="#/home"     data-link data-nav="home"><i data-i="home"></i><span>الرئيسية</span></a>
+      <a href="#/schedule" data-link data-nav="schedule"><i data-i="calendar"></i><span>الجدول</span></a>
+      <a href="#/exams"    data-link data-nav="exams"><i data-i="clipboard"></i><span>اختبارات</span></a>
+      <a href="#/courses"  data-link data-nav="courses"><i data-i="library"></i><span>مقررات</span></a>
+      <a href="#/adhkar"   data-link data-nav="adhkar"><i data-i="sparkle"></i><span>أذكار</span></a>
+    </nav>
   </div>
+</div>
 
-  <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
+<!-- طبقات عائمة -->
+<div id="sheet-layer" class="layer" hidden>
+  <div class="layer-veil" data-act="close-sheet"></div>
+  <section class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+    <header class="sheet-head">
+      <span class="sheet-grip" aria-hidden="true"></span>
+      <h2 id="sheet-title">—</h2>
+      <button class="icon-btn" data-act="close-sheet" aria-label="إغلاق"><i data-i="x"></i></button>
+    </header>
+    <div class="sheet-body" id="sheet-body"></div>
+    <footer class="sheet-foot" id="sheet-foot" hidden></footer>
+  </section>
+</div>
 
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-  <script src="app.js"></script>
+<div id="search-layer" class="layer" hidden>
+  <div class="layer-veil" data-act="close-search"></div>
+  <section class="finder" role="dialog" aria-modal="true" aria-label="بحث">
+    <div class="finder-head">
+      <i data-i="search"></i>
+      <input id="finder-input" type="search" placeholder="ابحث عن مقرر، محاضرة، اختبار، قاعة…" autocomplete="off" />
+      <button class="icon-btn" data-act="close-search" aria-label="إغلاق"><i data-i="x"></i></button>
+    </div>
+    <div class="finder-results" id="finder-results"></div>
+  </section>
+</div>
+
+<div id="toasts" class="toasts" aria-live="polite"></div>
+
+<script src="js/icons.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/store.js"></script>
+<script src="js/catalog.js"></script>
+<script src="js/adhkar.js"></script>
+<script src="js/ucs.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/views.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>

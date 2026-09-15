@@ -1,0 +1,142 @@
+/* ==========================================================================
+   tokens.css — نظام التصميم
+   ورق كريمي + حبر دافئ. كل الألوان تُشتق من هنا فقط.
+   ========================================================================== */
+
+:root{
+  /* --- الخطوط --- */
+  --font-ui: "IBM Plex Sans Arabic", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-display: "Readex Pro", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  --font-num: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* --- المقاسات --- */
+  --fs-xs: .75rem;
+  --fs-sm: .8125rem;
+  --fs-md: .9375rem;
+  --fs-lg: 1.0625rem;
+  --fs-xl: 1.3125rem;
+  --fs-2xl: 1.625rem;
+  --fs-3xl: 2.125rem;
+
+  /* --- المسافات --- */
+  --s1: 4px;  --s2: 8px;  --s3: 12px; --s4: 16px;
+  --s5: 20px; --s6: 24px; --s7: 32px; --s8: 44px;
+
+  /* --- الأنصاف --- */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 18px;
+  --r-xl: 26px;
+  --r-pill: 999px;
+
+  /* --- الحركة --- */
+  --ease: cubic-bezier(.2,.7,.3,1);
+  --t-1: .14s var(--ease);
+  --t-2: .24s var(--ease);
+  --t-3: .38s var(--ease);
+
+  /* --- قياسات الواجهة --- */
+  --rail-w: 232px;
+  --topbar-h: 60px;
+  --tabbar-h: calc(58px + env(safe-area-inset-bottom));
+  --wrap: 1180px;
+  --min-per-px: .82;           /* ارتفاع الدقيقة في شبكة الأسبوع */
+}
+
+/* ============================ الوضع الفاتح ============================ */
+:root,
+[data-theme="light"]{
+  color-scheme: light;
+
+  --paper:      #faf5ea;       /* خلفية الصفحة — كريمي */
+  --paper-2:    #f2e9d9;       /* مناطق غائرة */
+  --card:       #fffdf7;       /* سطح البطاقات */
+  --card-2:     #fbf6ec;
+
+  --ink:        #241f1a;       /* النص الأساسي */
+  --ink-2:      #5e554b;       /* ثانوي */
+  --ink-3:      #978c7d;       /* خافت */
+
+  --rule:       #e6dac6;       /* خطوط */
+  --rule-2:     #d6c7ad;
+
+  --shade-1: 0 1px 2px rgba(86,63,32,.06);
+  --shade-2: 0 6px 18px -10px rgba(86,63,32,.24);
+  --shade-3: 0 26px 60px -28px rgba(86,63,32,.42);
+
+  --ok:      #3f7d52;  --ok-soft:   #e4f0e4;
+  --warn:    #9a6a13;  --warn-soft: #f8ecd2;
+  --bad:     #a8402f;  --bad-soft:  #f7e2dc;
+  --info:    #2f6178;  --info-soft: #e0eef2;
+
+  --tape-alpha: .16;           /* شفافية لون المقرر في الشبكة */
+  --tape-line:  .46;
+  --tape-text:  #241f1a;
+}
+
+/* ============================= الوضع الداكن ============================= */
+[data-theme="dark"]{
+  color-scheme: dark;
+
+  --paper:      #141210;
+  --paper-2:    #1b1714;
+  --card:       #211d18;
+  --card-2:     #282219;
+
+  --ink:        #f4eee3;
+  --ink-2:      #bcb1a2;
+  --ink-3:      #8a7f71;
+
+  --rule:       #332c24;
+  --rule-2:     #473e33;
+
+  --shade-1: 0 1px 2px rgba(0,0,0,.5);
+  --shade-2: 0 8px 20px -12px rgba(0,0,0,.75);
+  --shade-3: 0 28px 64px -30px rgba(0,0,0,.9);
+
+  --ok:      #86c79a;  --ok-soft:   #1d2a21;
+  --warn:    #e0b264;  --warn-soft: #2d2517;
+  --bad:     #e89383;  --bad-soft:  #301d19;
+  --info:    #8fc2d4;  --info-soft: #17262c;
+
+  --tape-alpha: .24;
+  --tape-line:  .62;
+  --tape-text:  #f4eee3;
+}
+
+/* ============================== الأكسنتات ==============================
+   كل أكسنت يعرّف لونه الأساسي؛ المشتقات تُحسب تلقائياً.
+   ====================================================================== */
+[data-accent="pearl"]   { --accent-base:#2f7382; }  /* لؤلؤي */
+[data-accent="palm"]    { --accent-base:#4d7a45; }  /* نخيلي */
+[data-accent="saffron"] { --accent-base:#b07514; }  /* زعفراني */
+[data-accent="clay"]    { --accent-base:#a2573a; }  /* طيني */
+[data-accent="plum"]    { --accent-base:#77497c; }  /* برقوقي */
+[data-accent="sea"]     { --accent-base:#39598f; }  /* بحري */
+[data-accent="rose"]    { --accent-base:#a44d63; }  /* وردي */
+
+:root{
+  --accent-base: #2f7382;
+  --accent:      var(--accent-base);
+  --accent-ink:  #ffffff;
+  --accent-soft: color-mix(in srgb, var(--accent-base) 12%, var(--card));
+  --accent-line: color-mix(in srgb, var(--accent-base) 34%, transparent);
+  --accent-hot:  color-mix(in srgb, var(--accent-base) 86%, #000);
+  --ring:        color-mix(in srgb, var(--accent-base) 38%, transparent);
+}
+
+[data-theme="dark"]{
+  --accent:      color-mix(in srgb, var(--accent-base) 62%, #fff);
+  --accent-ink:  #16120f;
+  --accent-soft: color-mix(in srgb, var(--accent-base) 20%, var(--card));
+  --accent-line: color-mix(in srgb, var(--accent-base) 46%, transparent);
+  --accent-hot:  color-mix(in srgb, var(--accent-base) 74%, #fff);
+  --ring:        color-mix(in srgb, var(--accent-base) 55%, transparent);
+}
+
+/* ---- كثافة مضغوطة (اختيارية من الإعدادات) ---- */
+[data-density="compact"]{
+  --s4: 12px; --s5: 15px; --s6: 18px; --s7: 24px;
+  --fs-md: .875rem;
+  --min-per-px: .7;
+}

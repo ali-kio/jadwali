@@ -1,0 +1,101 @@
+/* ============ sw.js — Service Worker ============ */
+const VERSION = 'campus-os-v1.0.0';
+const CORE = `${VERSION}-core`;
+const RUNTIME = `${VERSION}-runtime`;
+
+const CORE_ASSETS = [
+  './',
+  './index.html',
+  './styles.css',
+  './app.js',
+  './manifest.json'
+];
+
+/* التثبيت: تخزين ملفات الهيكل الأساسي */
+self.addEventListener('install', event => {
+  event.waitUntil((async () => {
+    const cache = await caches.open(CORE);
+    await Promise.allSettled(CORE_ASSETS.map(url => cache.add(new Request(url, { cache: 'reload' }))));
+    await self.skipWaiting();
+  })());
+});
+
+/* التفعيل: حذف النسخ القديمة */
+self.addEventListener('activate', event => {
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys.filter(k => !k.startsWith(VERSION)).map(k => caches.delete(k)));
+    if (self.registration.navigationPreload) {
+      try { await self.registration.navigationPreload.enable(); } catch (_) {}
+    }
+    await self.clients.claim();
+  })());
+});
+
+/* استراتيجيات الجلب */
+self.addEventListener('fetch', event => {
+  const req = event.request;
+  if (req.method !== 'GET') return;
+
+  const url = new URL(req.url);
+
+  // 1) التنقل (HTML): شبكة أولاً ثم الكاش (يضمن آخر نسخة مع دعم أوفلاين كامل)
+  if (req.mode === 'navigate') {
+    event.respondWith((async () => {
+      try {
+        const preload = await event.preloadResponse;
+        if (preload) { (await caches.open(CORE)).put('./index.html', preload.clone()); return preload; }
+        const net = await fetch(req);
+        (await caches.open(CORE)).put('./index.html', net.clone());
+        return net;
+      } catch (_) {
+        const cache = await caches.open(CORE);
+        return (await cache.match('./index.html')) || (await cache.match('./')) || offlineFallback();
+      }
+    })());
+    return;
+  }
+
+  // 2) ملفات الهيكل نفس الأصل: كاش أولاً + تحديث بالخلفية
+  if (url.origin === location.origin) {
+    event.respondWith((async () => {
+      const cache = await caches.open(CORE);
+      const hit = await cache.match(req, { ignoreSearch: true });
+      const network = fetch(req).then(res => {
+        if (res && res.status === 200) cache.put(req, res.clone());
+        return res;
+      }).catch(() => null);
+      return hit || (await network) || offlineFallback();
+    })());
+    return;
+  }
+
+  // 3) موارد خارجية (خطوط، Tailwind، Lucide): stale-while-revalidate
+  event.respondWith((async () => {
+    const cache = await caches.open(RUNTIME);
+    const hit = await cache.match(req);
+    const network = fetch(req).then(res => {
+      if (res && (res.status === 200 || res.type === 'opaque')) cache.put(req, res.clone());
+      return res;
+    }).catch(() => null);
+    return hit || (await network) || new Response('', { status: 504, statusText: 'offline' });
+  })());
+});
+
+/* صفحة احتياطية عند غياب كل شيء */
+function offlineFallback() {
+  return new Response(
+    `<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8">
+     <meta name="viewport" content="width=device-width,initial-scale=1"><title>أوفلاين</title>
+     <style>body{margin:0;height:100vh;display:grid;place-items:center;background:#07060d;color:#f2f2f7;
+     font-family:system-ui,sans-serif;text-align:center;padding:24px}h1{font-size:20px;margin:0 0 8px}
+     p{color:#7c7b92;font-size:14px}</style></head>
+     <body><div><h1>ما قدرنا نحمّل التطبيق</h1><p>افتح التطبيق مرة وحدة وأنت متصل، وبعدها بيشتغل أوفلاين تماماً.</p></div></body></html>`,
+    { headers: { 'Content-Type': 'text/html; charset=utf-8' } }
+  );
+}
+
+/* رسائل من الصفحة (تحديث فوري) */
+self.addEventListener('message', event => {
+  if (event.data === 'SKIP_WAITING') self.skipWaiting();
+});
